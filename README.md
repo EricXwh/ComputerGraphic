@@ -50,6 +50,6 @@ Displacement
 
 ## Acknowledgments
 
-Special thanks to Professor Lingqi Yan for his video lectures and the code framework that has been instrumental in the development of these projects. 
+Special thanks to Professor Lingqi-Yan from UCSB for his video lectures and the code framework that has been instrumental in the development of these projects. 
 
 
