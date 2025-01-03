@@ -4,6 +4,8 @@
 
 #include <cstring>
 
+const float EPSILON = 1e-8f;
+
 bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f& v2, const Vector3f& orig,
                           const Vector3f& dir, float& tnear, float& u, float& v)
 {
@@ -11,7 +13,24 @@ bool rayTriangleIntersect(const Vector3f& v0, const Vector3f& v1, const Vector3f
     // that's specified bt v0, v1 and v2 intersects with the ray (whose
     // origin is *orig* and direction is *dir*)
     // Also don't forget to update tnear, u and v.
-    return false;
+    Vector3f edge1 = v1 - v0;
+    Vector3f edge2 = v2 - v0;
+    Vector3f pvec = crossProduct(dir, edge2);
+
+    float det = dotProduct(edge1, pvec);
+    if(fabs(det) < EPSILON) return false;
+    float invDet = 1.0f / det;
+    Vector3f tvec = orig - v0;
+    u = dotProduct(tvec, pvec) * invDet;
+    if(u < 0.0f || u > 1.0f) return false;
+
+    Vector3f qvec = crossProduct(tvec, edge1);
+    v = dotProduct(dir, qvec) * invDet;
+    if(v < 0.0f || u + v > 1.0f) return false;
+
+    tnear = dotProduct(edge2, qvec) * invDet;
+    if(tnear < EPSILON) return false;
+    return true;
 }
 
 class MeshTriangle : public Object
